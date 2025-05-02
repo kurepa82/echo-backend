@@ -1,33 +1,35 @@
-// server.js - Backend simulado para ECHO sin conexión a OpenAI
+// server.js - Backend limpio para ECHO en Render con CORS habilitado
 
 import express from 'express';
 import cors from 'cors';
-import dotenv from 'dotenv';
-
-dotenv.config();
 
 const app = express();
+
 app.use(cors({
-    origin: '*'
-  }));  
+  origin: '*',
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type'],
+  optionsSuccessStatus: 200,
+}));
+
 app.use(express.json());
 
 app.post('/api/chat', async (req, res) => {
   try {
     const { mensaje } = req.body;
-    console.log('🟢 Mensaje simulado recibido:', mensaje);
+    console.log('🟢 Mensaje recibido:', mensaje);
 
-    // Respuesta de ejemplo (simulada)
-    const respuesta = `Gracias por compartir eso. Me alegra que recuerdes: "${mensaje}". ¿Querés que lo recordemos juntos más adelante?`;
-
+    // Simulación de respuesta IA (modo demo)
+    const respuesta = `Qué lindo recuerdo: "${mensaje}". ¿Querés contarme más?`;
     res.json({ respuesta });
   } catch (error) {
-    console.error('Error simulado:', error);
-    res.status(500).json({ error: 'Error al procesar el mensaje simulado.' });
+    console.error('Error en el backend:', error);
+    res.status(500).json({ error: 'Ocurrió un error procesando tu mensaje.' });
   }
 });
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
-  console.log(`🧪 Servidor ECHO (modo demo) escuchando en http://localhost:${PORT}`);
+  console.log(`🧠 ECHO backend corriendo en el puerto ${PORT}`);
 });
+
